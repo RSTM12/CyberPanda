@@ -247,6 +247,7 @@
         if (tg.setHeaderColor) tg.setHeaderColor('#020205');
 
         // *** GANTI LINK DI BAWAH INI DENGAN LINK GITHUB PAGES BOS YANG BENAR ***
+        // Jangan lupa: Link ini harus bisa dibuka di browser dan muncul kode
         const MANIFEST_URL = 'https://rstm12.github.io/CyberPanda/tonconnect-manifest.json'; 
 
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -275,6 +276,7 @@
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(gameData)); }
 
+        // --- INIT UI ---
         const welcomeScreen = document.getElementById('welcome-screen');
         const userName = tg.initDataUnsafe?.user?.first_name || "Agent";
         document.getElementById('welcome-name').innerText = userName;
@@ -284,6 +286,7 @@
         if (gameData.hasStarted) { welcomeScreen.style.display = 'none'; }
         window.startGame = () => { welcomeScreen.classList.add('hidden-screen'); gameData.hasStarted = true; saveData(); setTimeout(() => welcomeScreen.style.display = 'none', 600); };
 
+        // --- WALLET ---
         const walletIndicator = document.getElementById('wallet-indicator');
         const walletStatusText = document.getElementById('wallet-status-text');
         function updateWalletUI(wallet) {
@@ -298,6 +301,7 @@
         tonConnectUI.onStatusChange(wallet => updateWalletUI(wallet));
         if (tonConnectUI.wallet) updateWalletUI(tonConnectUI.wallet);
 
+        // --- CORE GAME ---
         const now = Date.now();
         if (gameData.hasStarted && (now - gameData.lastLogin) > 0) gameData.balance += Math.floor((now - gameData.lastLogin)/1000) * gameData.profitPerSec;
         gameData.lastLogin = now;
@@ -366,7 +370,8 @@
             const now = Date.now();
             if (now - gameData.lastShareTime < 3600000) return showToast("Wait cooldown!", "error");
             gameData.balance += 50000; gameData.lastShareTime = now; saveData(); updateUI(); showToast("Reward +50,000 for sharing!");
-            const botUsername = 'GameKoinSayaBot'; // GANTI PAKE USERNAME BOT BOS
+            // *** UPDATE BOT USERNAME HERE ***
+            const botUsername = 'Cyberpanda_bot'; 
             const inviteLink = `https://t.me/${botUsername}?start=ref_${tg.initDataUnsafe?.user?.id || 'guest'}`;
             const shareText = `Join CyberPanda Kombat! Mine Neural Credits and get Airdrop. 🚀`;
             tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(shareText)}`);
@@ -408,7 +413,7 @@
             if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         }
 
-        // --- TASK VERIFICATION SYSTEM (SMART DELAY) ---
+        // --- TASK VERIFICATION (SMART DELAY) ---
         const tasks = [{ id: 'tg_channel_ofc', title: 'Join Official Channel', reward: 5000, icon: 'fa-telegram', url: 'https://t.me/CyberpandaOFC' }, { id: 'youtube', title: 'Subscribe YouTube', reward: 2000, icon: 'fa-youtube', url: 'https://youtube.com' }];
         
         function renderTasks() { 
@@ -418,22 +423,10 @@
                 const isDone = gameData.completedTasks.includes(task.id); 
                 const item = document.createElement('div'); 
                 item.className = `glass-card p-4 rounded-2xl flex items-center justify-between ${isDone ? 'opacity-50' : 'cursor-pointer'}`; 
-                
-                // Button State Logic
                 let btnHtml = '<div class="bg-cyber-blue/20 text-cyber-blue px-3 py-1 rounded text-[10px] font-bold">GO</div>';
                 if(isDone) btnHtml = '<i class="fa-solid fa-check text-cyber-blue"></i>';
-                
-                if(!isDone) {
-                    item.onclick = (e) => startTaskVerification(task.id, e.currentTarget);
-                }
-
-                item.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <i class="fa-brands ${task.icon} text-2xl text-cyber-blue"></i>
-                        <div><h3 class="font-bold text-sm">${task.title}</h3><div class="text-cyber-gold text-xs font-bold">+${task.reward}</div></div>
-                    </div>
-                    <div class="task-status">${btnHtml}</div>
-                `; 
+                if(!isDone) { item.onclick = (e) => startTaskVerification(task.id, e.currentTarget); }
+                item.innerHTML = `<div class="flex items-center gap-3"><i class="fa-brands ${task.icon} text-2xl text-cyber-blue"></i><div><h3 class="font-bold text-sm">${task.title}</h3><div class="text-cyber-gold text-xs font-bold">+${task.reward}</div></div></div><div class="task-status">${btnHtml}</div>`; 
                 list.appendChild(item); 
             }); 
         }
@@ -441,25 +434,16 @@
         function startTaskVerification(taskId, element) {
             const statusDiv = element.querySelector('.task-status');
             const task = tasks.find(t => t.id === taskId);
-            
-            // 1. Open Link
             tg.openLink(task.url);
-            
-            // 2. Change UI to "Checking"
             statusDiv.innerHTML = '<div class="bg-yellow-500/20 text-yellow-500 px-3 py-1 rounded text-[10px] font-bold animate-pulse">Checking... 15s</div>';
-            element.onclick = null; // Disable click temp
-
-            // 3. Wait 15 Seconds (Psychological Verification)
+            element.onclick = null;
             let seconds = 15;
             const timer = setInterval(() => {
                 seconds--;
-                if (seconds > 0) {
-                    statusDiv.innerHTML = `<div class="bg-yellow-500/20 text-yellow-500 px-3 py-1 rounded text-[10px] font-bold animate-pulse">Checking... ${seconds}s</div>`;
-                } else {
+                if (seconds > 0) { statusDiv.innerHTML = `<div class="bg-yellow-500/20 text-yellow-500 px-3 py-1 rounded text-[10px] font-bold animate-pulse">Checking... ${seconds}s</div>`; } 
+                else {
                     clearInterval(timer);
-                    // 4. Show Claim Button
                     statusDiv.innerHTML = '<div class="bg-green-500 text-black px-3 py-1 rounded text-[10px] font-bold hover:bg-green-400 transition">CLAIM</div>';
-                    // Re-enable click for claiming
                     element.onclick = () => claimTaskReward(taskId);
                     showToast("Verification Complete! Tap to Claim.");
                     if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
@@ -469,19 +453,14 @@
 
         function claimTaskReward(taskId) {
             const task = tasks.find(t => t.id === taskId);
-            gameData.balance += task.reward; 
-            gameData.completedTasks.push(taskId); 
-            renderTasks(); 
-            updateUI(); 
-            saveData(); 
-            showToast(`Task Complete! +${task.reward}`);
+            gameData.balance += task.reward; gameData.completedTasks.push(taskId); renderTasks(); updateUI(); saveData(); showToast(`Task Complete! +${task.reward}`);
             if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         }
 
         function renderLeaderboard() {
             const list = document.getElementById('leaderboard-list'); list.innerHTML = '';
             const names = ["CryptoWhale_01", "TonMaster_GEM", "PandaKing", "Satoshi_Fan", "PixelPanda", "Future_X", "Red_Baron"];
-            const scores = [99571000, 88247000, 76690000, 53300000, 42770000, 38100000, 15690000];
+            const scores = [99571000, 88271000, 76962000, 53690000, 42770000, 34360000, 15180000];
             names.forEach((name, i) => { list.innerHTML += `<div class="glass-card p-3 rounded-xl flex items-center justify-between opacity-80"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold text-xs">${i + 1}</div><span class="font-bold text-gray-200 text-sm">${name}</span></div><span class="text-cyber-gold font-bold text-sm">${scores[i].toLocaleString()}</span></div>`; });
         }
 
