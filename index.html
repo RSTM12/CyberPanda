@@ -80,7 +80,6 @@
     <div id="welcome-screen" class="fixed inset-0 z-[999] bg-[#020205] flex flex-col items-center justify-center p-6 text-center">
         <div class="absolute inset-0 bg-[linear-gradient(rgba(0,243,255,0.03)_1px,transparent_1px)] bg-[length:40px_40px] pointer-events-none"></div>
         <div class="relative z-10 flex flex-col items-center">
-            <!-- PANDA LOGO -->
             <div class="w-32 h-32 mb-6 rounded-full bg-gradient-to-b from-cyber-blue to-cyber-purple p-1 animate-pulse-glow">
                 <div class="w-full h-full bg-black rounded-full flex items-center justify-center overflow-hidden">
                     <img src="https://cdn-icons-png.flaticon.com/512/3305/3305755.png" alt="Panda" class="w-24 h-24 filter brightness-125">
@@ -88,7 +87,7 @@
             </div>
             
             <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyber-blue to-purple-500 mb-2">CYBER PANDA</h1>
-            <p class="text-gray-400 tracking-[0.3em] text-sm mb-12">SYSTEM PROTOCOL V.6.0</p>
+            <p class="text-gray-400 tracking-[0.3em] text-sm mb-12">SYSTEM PROTOCOL V.7.0</p>
             <div class="glass-card p-6 rounded-2xl w-full max-w-xs border border-cyber-blue/20 mb-8">
                 <p class="text-gray-400 text-sm mb-1">Welcome Agent,</p>
                 <h2 id="welcome-name" class="text-2xl font-bold text-cyber-gold tracking-wide">Unknown User</h2>
@@ -137,15 +136,19 @@
                 <p class="text-cyber-blue text-sm tracking-[0.3em] mt-2 uppercase opacity-70">Neural Credits</p>
             </div>
 
-            <!-- TOMBOL UTAMA (TOKEN EMAS) -->
-            <div id="click-btn" class="relative w-80 h-80 group cursor-pointer z-10">
+            <!-- TOMBOL UTAMA (FIXED: GOLD COIN CSS) -->
+            <div id="click-btn" class="relative w-80 h-80 group cursor-pointer z-10 flex items-center justify-center">
+                <!-- Efek Putar Luar -->
                 <div class="absolute inset-0 rounded-full border-[4px] border-cyber-blue/20 border-dashed animate-spin-slow"></div>
-                <div class="absolute inset-4 rounded-full bg-gradient-to-tr from-cyber-purple/40 via-cyber-dark to-cyber-blue/40 backdrop-blur-md border border-white/10 shadow-[0_0_80px_rgba(0,243,255,0.3)] animate-pulse-glow group-active:scale-95 transition-all duration-150"></div>
-                <div class="absolute inset-0 flex items-center justify-center group-active:scale-90 transition-transform duration-150">
-                    
-                    <!-- INI GAMBAR TOKEN EMAS -->
-                    <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/image2_h428_w428_gif.gif" alt="Golden CyberPanda Token" class="w-64 h-64 drop-shadow-[0_0_40px_rgba(0,243,255,0.5)] relative z-20 rounded-full object-cover">
                 
+                <!-- Koin Emas CSS (Anti Rusak) -->
+                <div class="relative w-64 h-64 rounded-full bg-gradient-to-b from-yellow-300 via-yellow-500 to-yellow-700 shadow-[0_0_60px_rgba(255,215,0,0.4)] border-4 border-yellow-200 flex items-center justify-center group-active:scale-95 transition-transform duration-150 overflow-hidden">
+                    
+                    <!-- Efek Kilau -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent pointer-events-none z-20"></div>
+                    
+                    <!-- Gambar Panda (Pakai Icon Stabil) -->
+                    <img src="https://cdn-icons-png.flaticon.com/512/3305/3305755.png" alt="Panda" class="w-44 h-44 drop-shadow-lg relative z-10 filter sepia-[.3] contrast-125">
                 </div>
             </div>
 
@@ -213,9 +216,9 @@
             buttonRootId: 'ton-connect-btn'
         });
 
-        // Simpan Data di LocalStorage V6
+        // V7 Data Storage
         const defaultData = { hasStarted: false, balance: 0, energy: 1000, maxEnergy: 1000, clickPower: 1, profitPerSec: 1, lastLogin: Date.now(), upgrades: { multitap: { level: 1, price: 500 }, energy: { level: 1, price: 1000 }, mining_rig: { level: 0, price: 5000 } }, completedTasks: [] };
-        let gameData = JSON.parse(localStorage.getItem('cyberPandaData_v6')) || defaultData;
+        let gameData = JSON.parse(localStorage.getItem('cyberPandaData_v7')) || defaultData;
         
         const welcomeScreen = document.getElementById('welcome-screen');
         const userName = tg.initDataUnsafe?.user?.first_name || "Agent";
@@ -227,7 +230,7 @@
         window.startGame = () => {
             welcomeScreen.classList.add('hidden-screen');
             gameData.hasStarted = true;
-            localStorage.setItem('cyberPandaData_v6', JSON.stringify(gameData));
+            localStorage.setItem('cyberPandaData_v7', JSON.stringify(gameData));
             if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
             setTimeout(() => welcomeScreen.style.display = 'none', 600);
         };
@@ -264,7 +267,7 @@
                 if (gameData.energy < gameData.maxEnergy) gameData.energy += 2;
                 if (gameData.energy > gameData.maxEnergy) gameData.energy = gameData.maxEnergy;
                 gameData.lastLogin = Date.now();
-                localStorage.setItem('cyberPandaData_v6', JSON.stringify(gameData));
+                localStorage.setItem('cyberPandaData_v7', JSON.stringify(gameData));
                 updateUI();
             }
         }, 1000);
@@ -291,12 +294,9 @@
             } else showToast('Need Credits!', 'error');
         };
 
-        // --- UPDATE DAFTAR TUGAS DI SINI ---
+        // --- UPDATE DAFTAR TUGAS (Official Channel) ---
         const tasks = [
-            // Tugas Baru: Official Channel (Reward 5000)
             { id: 'tg_channel_ofc', title: 'Join Official Channel', reward: 5000, icon: 'fa-telegram', url: 'https://t.me/CyberpandaOFC' },
-            // Tugas Twitter SUDAH DIHAPUS
-            // Tugas YouTube Tetap Ada
             { id: 'youtube', title: 'Subscribe YouTube', reward: 2000, icon: 'fa-youtube', url: 'https://youtube.com' }
         ];
 
