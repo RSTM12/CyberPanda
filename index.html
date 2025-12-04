@@ -46,9 +46,11 @@
         .hidden-screen { opacity: 0; visibility: hidden; pointer-events: none; transition: 0.5s; }
         .floating-text { position: absolute; color: #00f3ff; font-weight: bold; font-size: 28px; animation: floatUp 0.8s forwards; pointer-events: none; z-index: 50; }
         @keyframes floatUp { to { opacity: 0; transform: translateY(-80px); } }
+        
+        /* FIX Z-INDEX UNTUK TON BUTTON SUPAYA BISA DIKLIK */
+        #ton-connect-btn { position: relative; z-index: 50; }
         #ton-connect-btn button { width: 100%; justify-content: center; font-family: 'Rajdhani', sans-serif; font-weight: bold; }
         
-        /* Scrollbar Hide */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -58,7 +60,6 @@
     <!-- WELCOME SCREEN -->
     <div id="welcome-screen" class="fixed inset-0 z-[999] bg-[#020205] flex flex-col items-center justify-center p-6 text-center transition-all duration-500">
         <div class="relative z-10 flex flex-col items-center">
-            <!-- PANDA SVG -->
             <div class="w-32 h-32 mb-6 rounded-full bg-gradient-to-b from-cyber-blue to-cyber-purple p-1 animate-pulse-glow">
                 <div class="w-full h-full bg-black rounded-full flex items-center justify-center overflow-hidden">
                     <svg viewBox="0 0 200 200" class="w-24 h-24">
@@ -175,28 +176,26 @@
             </div>
         </div>
 
-        <!-- EARN TAB (DAILY LOGIN IS HERE) -->
+        <!-- EARN TAB (DAILY FIXED) -->
         <div id="tab-earn" class="tab-content px-4">
             <h2 class="text-2xl font-bold mb-4 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2">Daily Rewards</h2>
             
-            <!-- DAILY LOGIN SECTION -->
-            <div class="glass-card p-4 rounded-2xl mb-6">
+            <div class="glass-card p-4 rounded-2xl mb-6 relative z-10">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-bold text-white">Login Streak</h3>
                     <span id="daily-streak-display" class="text-cyber-gold font-bold">Day 1</span>
                 </div>
-                <!-- Horizontal Scroll for Days -->
-                <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="daily-container">
-                    <!-- Daily items injected by JS -->
-                </div>
-                <button onclick="claimDaily()" id="daily-claim-btn" class="w-full mt-2 py-2 bg-cyber-blue/20 border border-cyber-blue text-cyber-blue font-bold rounded-xl hover:bg-cyber-blue hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="daily-container"></div>
+                <!-- FIXED BUTTON CLICK -->
+                <button id="daily-claim-btn" class="w-full mt-2 py-2 bg-cyber-blue/20 border border-cyber-blue text-cyber-blue font-bold rounded-xl hover:bg-cyber-blue hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed z-20 relative">
                     CLAIM REWARD
                 </button>
             </div>
 
             <h2 class="text-xl font-bold mb-4 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2">Airdrop Tasks</h2>
             <div class="space-y-4 pb-4">
-                <div class="glass-card p-5 rounded-2xl border border-cyber-blue/50 relative">
+                <!-- TON CONNECT WRAPPER (FIXED Z-INDEX) -->
+                <div class="glass-card p-5 rounded-2xl border border-cyber-blue/50 relative z-30">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-2xl font-bold">💎</div>
                         <div><h3 class="font-bold text-lg text-white">Connect TON Wallet</h3><p class="text-xs text-gray-400">Link wallet for airdrops.</p></div>
@@ -207,61 +206,26 @@
             </div>
         </div>
 
-        <!-- NEW TAB: LEADERBOARD -->
+        <!-- LEADERBOARD TAB -->
         <div id="tab-rank" class="tab-content px-4">
             <h2 class="text-2xl font-bold mb-6 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2 flex justify-between">
                 <span>Leaderboard</span>
                 <span class="text-xs text-gray-400 mt-2 font-normal lowercase">global ranking</span>
             </h2>
-            
-            <!-- My Rank Card -->
             <div class="glass-card p-4 rounded-2xl mb-6 border border-cyber-gold/50 flex items-center justify-between bg-cyber-gold/10">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-cyber-gold flex items-center justify-center text-black font-bold text-xl border-2 border-white">
-                        #99+
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-white" id="rank-username">You</h3>
-                        <p class="text-xs text-cyber-gold" id="rank-balance">0 Credits</p>
-                    </div>
+                    <div class="w-12 h-12 rounded-full bg-cyber-gold flex items-center justify-center text-black font-bold text-xl border-2 border-white">#99+</div>
+                    <div><h3 class="font-bold text-white" id="rank-username">You</h3><p class="text-xs text-cyber-gold" id="rank-balance">0 Credits</p></div>
                 </div>
-                <div class="text-right">
-                    <p class="text-[10px] text-gray-400">LEAGUE</p>
-                    <p class="font-bold text-cyber-blue">NOVICE</p>
-                </div>
+                <div class="text-right"><p class="text-[10px] text-gray-400">LEAGUE</p><p class="font-bold text-cyber-blue">NOVICE</p></div>
             </div>
-
-            <!-- Fake Top Players -->
-            <div class="space-y-3 overflow-y-auto pb-4 h-[60vh]">
-                <!-- Static High Rankers -->
-                <div class="glass-card p-3 rounded-xl flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold">1</div>
-                        <span class="font-bold text-gray-200">CryptoWhale_01</span>
-                    </div>
-                    <span class="text-cyber-gold font-bold text-sm">99,500,000</span>
-                </div>
-                <div class="glass-card p-3 rounded-xl flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-gray-400 text-black flex items-center justify-center font-bold">2</div>
-                        <span class="font-bold text-gray-200">TonMaster_GEM</span>
-                    </div>
-                    <span class="text-cyber-gold font-bold text-sm">88,200,000</span>
-                </div>
-                <div class="glass-card p-3 rounded-xl flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-orange-700 text-black flex items-center justify-center font-bold">3</div>
-                        <span class="font-bold text-gray-200">PandaKing</span>
-                    </div>
-                    <span class="text-cyber-gold font-bold text-sm">76,000,000</span>
-                </div>
-                <!-- Random generated list below -->
-                <div id="leaderboard-list" class="space-y-3"></div>
+            <div class="space-y-3 overflow-y-auto pb-4 h-[60vh]" id="leaderboard-list">
+                 <div class="glass-card p-3 rounded-xl flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold">1</div><span class="font-bold text-gray-200">CryptoWhale_01</span></div><span class="text-cyber-gold font-bold text-sm">99,500,000</span></div>
             </div>
         </div>
     </div>
 
-    <!-- NAV BAR (NOW 4 BUTTONS) -->
+    <!-- NAV BAR -->
     <div class="fixed bottom-6 left-6 right-6 z-50">
         <div class="nav-glass glass-card rounded-full p-2 flex justify-around items-center">
             <button onclick="switchTab('home')" class="nav-btn text-cyber-blue flex flex-col items-center w-1/4" data-target="home"><i class="fa-solid fa-microchip text-xl mb-1"></i><span class="text-[9px] font-bold">CORE</span></button>
@@ -277,139 +241,40 @@
         const tg = window.Telegram.WebApp; tg.ready(); tg.expand();
         if (tg.setHeaderColor) tg.setHeaderColor('#020205');
 
+        // --- 1. CONFIG MANIFEST WALLET (WAJIB GANTI INI) ---
+        // GANTI LINK DI BAWAH DENGAN LINK GITHUB PAGES BOS !!
+        // Contoh: 'https://username.github.io/game-panda/tonconnect-manifest.json'
+        const MANIFEST_URL = './tonconnect-manifest.json'; 
+
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: './tonconnect-manifest.json',
+            manifestUrl: MANIFEST_URL,
             buttonRootId: 'ton-connect-btn'
         });
 
-        // --- DATA MANAGEMENT (SAFE MERGE) ---
+        // --- 2. DATA CONFIG ---
         const STORAGE_KEY = 'cyberPanda_LIVE_PERMANENT';
 
-        // Struktur Data Default (Termasuk field baru 'daily')
         const defaultData = { 
-            hasStarted: false, 
-            balance: 0, 
-            energy: 1000, 
-            maxEnergy: 1000, 
-            clickPower: 1, 
-            profitPerSec: 1, 
-            lastLogin: Date.now(), 
-            upgrades: { 
-                multitap: { level: 1, price: 500 }, 
-                energy: { level: 1, price: 1000 }, 
-                mining_rig: { level: 0, price: 5000 } 
-            }, 
+            hasStarted: false, balance: 0, energy: 1000, maxEnergy: 1000, clickPower: 1, profitPerSec: 1, lastLogin: Date.now(), 
+            upgrades: { multitap: { level: 1, price: 500 }, energy: { level: 1, price: 1000 }, mining_rig: { level: 0, price: 5000 } }, 
             completedTasks: [],
-            // Data Baru untuk Daily Login
-            daily: {
-                lastClaimTime: 0,
-                streak: 0
-            }
+            daily: { lastClaimTime: 0, streak: 0 }
         };
         
-        // Load data lama
         let savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        
-        // GABUNGKAN DATA: Kalau user lama belum punya fitur 'daily', kita tambahkan otomatis tanpa hapus balance
         let gameData = { ...defaultData, ...savedData };
-        if (!gameData.daily) gameData.daily = { lastClaimTime: 0, streak: 0 }; // Safety check for old users
+        if (!gameData.daily) gameData.daily = { lastClaimTime: 0, streak: 0 }; 
 
-        function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(gameData));
-        }
+        function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(gameData)); }
 
-        // --- WELCOME & INIT ---
-        const welcomeScreen = document.getElementById('welcome-screen');
-        const userName = tg.initDataUnsafe?.user?.first_name || "Agent";
-        document.getElementById('welcome-name').innerText = userName;
-        document.getElementById('username').innerText = userName;
-        document.getElementById('rank-username').innerText = userName; // Set name in rank tab
-
-        if (gameData.hasStarted) { welcomeScreen.style.display = 'none'; }
-
-        window.startGame = () => {
-            welcomeScreen.classList.add('hidden-screen');
-            gameData.hasStarted = true;
-            saveData();
-            if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-            setTimeout(() => welcomeScreen.style.display = 'none', 600);
-        };
-
-        // --- TON CONNECT ---
-        const walletIndicator = document.getElementById('wallet-indicator');
-        const walletStatusText = document.getElementById('wallet-status-text');
-
-        tonConnectUI.onStatusChange(wallet => {
-            if (wallet) {
-                walletIndicator.classList.remove('bg-gray-500'); walletIndicator.classList.add('bg-green-500', 'shadow-[0_0_10px_#00ff00]');
-                const addr = wallet.account.address; walletStatusText.innerText = addr.slice(0,4) + '...' + addr.slice(-4); walletStatusText.classList.add('text-green-400');
-            } else {
-                walletIndicator.classList.add('bg-gray-500'); walletIndicator.classList.remove('bg-green-500', 'shadow-[0_0_10px_#00ff00]');
-                walletStatusText.innerText = "No Wallet"; walletStatusText.classList.remove('text-green-400');
-            }
-        });
-
-        // --- OFFLINE INCOME ---
-        const now = Date.now();
-        if (gameData.hasStarted && (now - gameData.lastLogin) > 0) gameData.balance += Math.floor((now - gameData.lastLogin)/1000) * gameData.profitPerSec;
-        gameData.lastLogin = now;
-
-        // --- UI UPDATES ---
-        const balanceEl = document.getElementById('balance'); const energyDisplay = document.getElementById('energy-display'); const energyBar = document.getElementById('energy-bar'); const profitEl = document.getElementById('profit-per-sec');
-        
-        function updateUI() {
-            balanceEl.innerText = Math.floor(gameData.balance).toLocaleString(); 
-            energyDisplay.innerText = `${Math.floor(gameData.energy)} / ${gameData.maxEnergy}`; 
-            energyBar.style.width = `${(gameData.energy / gameData.maxEnergy) * 100}%`; 
-            profitEl.innerText = `+${gameData.profitPerSec}`;
-            
-            document.getElementById('price-multitap').innerText = gameData.upgrades.multitap.price.toLocaleString();
-            document.getElementById('price-energy').innerText = gameData.upgrades.energy.price.toLocaleString();
-            
-            const rig = gameData.upgrades.mining_rig;
-            document.getElementById('price-mining_rig').parentNode.parentNode.innerHTML = rig.level > 0 ? '<span class="text-cyber-blue font-bold">ACTIVE</span>' : `<div class="text-cyber-gold font-bold"><i class="fa-solid fa-coins"></i> <span id="price-mining_rig">${rig.price}</span></div>`;
-
-            // Update Rank Card in Leaderboard
-            document.getElementById('rank-balance').innerText = Math.floor(gameData.balance).toLocaleString() + " Credits";
-        }
-
-        setInterval(() => {
-            if (gameData.hasStarted) {
-                gameData.balance += gameData.profitPerSec;
-                if (gameData.energy < gameData.maxEnergy) gameData.energy += 2;
-                if (gameData.energy > gameData.maxEnergy) gameData.energy = gameData.maxEnergy;
-                gameData.lastLogin = Date.now();
-                saveData();
-                updateUI();
-            }
-        }, 1000);
-
-        document.getElementById('click-btn').addEventListener('pointerdown', (e) => {
-            if (gameData.energy >= gameData.clickPower) {
-                gameData.balance += gameData.clickPower; gameData.energy -= gameData.clickPower;
-                if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-                updateUI();
-                const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = `+${gameData.clickPower}`;
-                el.style.left = `${e.clientX}px`; el.style.top = `${e.clientY - 80}px`;
-                document.body.appendChild(el); setTimeout(() => el.remove(), 800);
-            } else if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        });
-
-        window.buyUpgrade = (type) => {
-            const up = gameData.upgrades[type];
-            if (type === 'mining_rig' && up.level > 0) return showToast('Already Active!', 'error');
-            if (gameData.balance >= up.price) {
-                gameData.balance -= up.price;
-                if (type === 'mining_rig') { up.level = 1; gameData.profitPerSec = 50; showToast('Rig Activated!');}
-                else { up.level++; up.price = Math.floor(up.price * 1.6); if(type=='multitap') gameData.clickPower++; if(type=='energy') gameData.maxEnergy+=500; showToast('Upgraded!');}
-                updateUI();
-                saveData();
-            } else showToast('Need Credits!', 'error');
-        };
-
-        // --- DAILY LOGIN SYSTEM ---
+        // --- 3. DAILY LOGIN LOGIC (FIXED) ---
         const dailyRewards = [500, 1000, 2500, 5000, 10000, 25000, 100000];
         
+        // Pasang Event Listener Manual biar tombolnya responsif
+        document.getElementById('daily-claim-btn').addEventListener('click', function() {
+            claimDaily();
+        });
+
         function renderDailyLogin() {
             const container = document.getElementById('daily-container');
             const streakDisplay = document.getElementById('daily-streak-display');
@@ -417,56 +282,68 @@
             
             container.innerHTML = '';
             
-            // Logic Check Time
-            const lastClaimDate = new Date(gameData.daily.lastClaimTime).toDateString();
-            const todayDate = new Date().toDateString();
-            const isClaimable = lastClaimDate !== todayDate;
+            // Logic Cek Hari: Gunakan setHours(0,0,0,0) agar hitungan per hari, bukan per jam
+            const lastClaimDate = new Date(gameData.daily.lastClaimTime);
+            lastClaimDate.setHours(0,0,0,0);
             
-            // Logic Streak Reset if missed more than 1 day
-            const diffTime = Math.abs(new Date() - new Date(gameData.daily.lastClaimTime));
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            
+            // Jika tanggal terakhir klaim < hari ini, berarti BISA klaim
+            const isClaimable = lastClaimDate.getTime() < today.getTime();
+            
+            // Cek Streak Putus (Jika selisih lebih dari 1 hari)
+            const diffTime = Math.abs(today - lastClaimDate);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-            if (diffDays > 2 && gameData.daily.lastClaimTime !== 0) {
-                gameData.daily.streak = 0; // Reset streak
+            if (diffDays > 1 && gameData.daily.lastClaimTime !== 0) {
+                 // Kalau user absen lebih dari 1 hari, reset streak, tapi tetep bisa klaim hari 1
+                 if(isClaimable) gameData.daily.streak = 0; 
             }
 
             streakDisplay.innerText = `Day ${gameData.daily.streak + 1}`;
 
-            // Render 7 Days
+            // Render UI
             for (let i = 0; i < 7; i++) {
-                const dayDiv = document.createElement('div');
-                let statusClass = 'bg-gray-800 border-gray-700 opacity-50'; // Default Locked
-                
-                if (i < gameData.daily.streak) {
-                    statusClass = 'bg-green-900/50 border-green-500 opacity-100'; // Claimed
-                } else if (i === gameData.daily.streak) {
-                    statusClass = 'bg-cyber-blue/20 border-cyber-blue animate-pulse-glow'; // Current
-                }
+                let statusClass = 'bg-gray-800 border-gray-700 opacity-50';
+                if (i < gameData.daily.streak) statusClass = 'bg-green-900/50 border-green-500 opacity-100';
+                else if (i === gameData.daily.streak) statusClass = 'bg-cyber-blue/20 border-cyber-blue animate-pulse-glow';
 
+                const dayDiv = document.createElement('div');
                 dayDiv.className = `min-w-[70px] h-[90px] rounded-xl border flex flex-col items-center justify-center p-2 ${statusClass}`;
-                dayDiv.innerHTML = `
-                    <span class="text-[10px] text-gray-400">Day ${i+1}</span>
-                    <i class="fa-solid fa-gift text-xl my-1 ${i === gameData.daily.streak ? 'text-cyber-gold' : 'text-gray-500'}"></i>
-                    <span class="text-[10px] font-bold text-white">${dailyRewards[i].toLocaleString()}</span>
-                `;
+                dayDiv.innerHTML = `<span class="text-[10px] text-gray-400">Day ${i+1}</span><i class="fa-solid fa-gift text-xl my-1 ${i===gameData.daily.streak?'text-cyber-gold':'text-gray-500'}"></i><span class="text-[10px] font-bold text-white">${dailyRewards[i].toLocaleString()}</span>`;
                 container.appendChild(dayDiv);
             }
 
-            // Button State
             if (isClaimable) {
                 claimBtn.disabled = false;
                 claimBtn.innerText = "CLAIM REWARD";
-                claimBtn.classList.remove('opacity-50');
+                claimBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             } else {
                 claimBtn.disabled = true;
                 claimBtn.innerText = "COME BACK TOMORROW";
-                claimBtn.classList.add('opacity-50');
+                claimBtn.classList.add('opacity-50', 'cursor-not-allowed');
             }
         }
 
-        window.claimDaily = () => {
+        function claimDaily() {
+            // Re-check logic inside function to prevent cheating
+            const lastClaimDate = new Date(gameData.daily.lastClaimTime);
+            lastClaimDate.setHours(0,0,0,0);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            if (lastClaimDate.getTime() >= today.getTime()) {
+                showToast("Already claimed today!", "error");
+                return;
+            }
+
             const reward = dailyRewards[gameData.daily.streak];
             gameData.balance += reward;
-            gameData.daily.streak = (gameData.daily.streak + 1) % 7; // Loop after 7 days
+            
+            // Increment streak, loop if max
+            gameData.daily.streak = (gameData.daily.streak + 1);
+            if(gameData.daily.streak >= 7) gameData.daily.streak = 0;
+            
             gameData.daily.lastClaimTime = Date.now();
             
             saveData();
@@ -474,66 +351,53 @@
             renderDailyLogin();
             showToast(`Received +${reward.toLocaleString()}!`);
             if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        }
+
+        // --- INIT & UTILS ---
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const userName = tg.initDataUnsafe?.user?.first_name || "Agent";
+        document.getElementById('welcome-name').innerText = userName;
+        document.getElementById('username').innerText = userName;
+        document.getElementById('rank-username').innerText = userName;
+
+        if (gameData.hasStarted) { welcomeScreen.style.display = 'none'; }
+        window.startGame = () => { welcomeScreen.classList.add('hidden-screen'); gameData.hasStarted = true; saveData(); setTimeout(() => welcomeScreen.style.display = 'none', 600); };
+
+        const now = Date.now();
+        if (gameData.hasStarted && (now - gameData.lastLogin) > 0) gameData.balance += Math.floor((now - gameData.lastLogin)/1000) * gameData.profitPerSec;
+        gameData.lastLogin = now;
+
+        const balanceEl = document.getElementById('balance'); const energyDisplay = document.getElementById('energy-display'); const energyBar = document.getElementById('energy-bar'); const profitEl = document.getElementById('profit-per-sec');
+        function updateUI() {
+            balanceEl.innerText = Math.floor(gameData.balance).toLocaleString(); energyDisplay.innerText = `${Math.floor(gameData.energy)} / ${gameData.maxEnergy}`; energyBar.style.width = `${(gameData.energy / gameData.maxEnergy) * 100}%`; profitEl.innerText = `+${gameData.profitPerSec}`;
+            document.getElementById('price-multitap').innerText = gameData.upgrades.multitap.price.toLocaleString();
+            document.getElementById('price-energy').innerText = gameData.upgrades.energy.price.toLocaleString();
+            const rig = gameData.upgrades.mining_rig;
+            document.getElementById('price-mining_rig').parentNode.parentNode.innerHTML = rig.level > 0 ? '<span class="text-cyber-blue font-bold">ACTIVE</span>' : `<div class="text-cyber-gold font-bold"><i class="fa-solid fa-coins"></i> <span id="price-mining_rig">${rig.price}</span></div>`;
+            document.getElementById('rank-balance').innerText = Math.floor(gameData.balance).toLocaleString() + " Credits";
+        }
+
+        setInterval(() => { if (gameData.hasStarted) { gameData.balance += gameData.profitPerSec; if (gameData.energy < gameData.maxEnergy) gameData.energy += 2; if (gameData.energy > gameData.maxEnergy) gameData.energy = gameData.maxEnergy; gameData.lastLogin = Date.now(); saveData(); updateUI(); } }, 1000);
+
+        document.getElementById('click-btn').addEventListener('pointerdown', (e) => {
+            if (gameData.energy >= gameData.clickPower) { gameData.balance += gameData.clickPower; gameData.energy -= gameData.clickPower; if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy'); updateUI(); const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = `+${gameData.clickPower}`; el.style.left = `${e.clientX}px`; el.style.top = `${e.clientY - 80}px`; document.body.appendChild(el); setTimeout(() => el.remove(), 800); } else if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+        });
+
+        window.buyUpgrade = (type) => { const up = gameData.upgrades[type]; if (type === 'mining_rig' && up.level > 0) return showToast('Already Active!', 'error'); if (gameData.balance >= up.price) { gameData.balance -= up.price; if (type === 'mining_rig') { up.level = 1; gameData.profitPerSec = 50; showToast('Rig Activated!');} else { up.level++; up.price = Math.floor(up.price * 1.6); if(type=='multitap') gameData.clickPower++; if(type=='energy') gameData.maxEnergy+=500; showToast('Upgraded!');} updateUI(); saveData(); } else showToast('Need Credits!', 'error'); };
+        
+        const tasks = [{ id: 'tg_channel_ofc', title: 'Join Official Channel', reward: 5000, icon: 'fa-telegram', url: 'https://t.me/CyberpandaOFC' }, { id: 'youtube', title: 'Subscribe YouTube', reward: 2000, icon: 'fa-youtube', url: 'https://youtube.com' }];
+        function renderTasks() { const list = document.getElementById('task-list'); list.innerHTML = ''; tasks.forEach(task => { const isDone = gameData.completedTasks.includes(task.id); const item = document.createElement('div'); item.className = `glass-card p-4 rounded-2xl flex items-center justify-between ${isDone ? 'opacity-50' : 'cursor-pointer'}`; if(!isDone) item.onclick = () => { tg.openLink(task.url); showToast("Verifying...", "info"); setTimeout(() => { gameData.balance += task.reward; gameData.completedTasks.push(task.id); renderTasks(); updateUI(); saveData(); showToast("Credits Added!"); }, 3000); }; item.innerHTML = `<div class="flex items-center gap-3"><i class="fa-brands ${task.icon} text-2xl text-cyber-blue"></i><div><h3 class="font-bold text-sm">${task.title}</h3><div class="text-cyber-gold text-xs font-bold">+${task.reward}</div></div></div>${isDone ? '<i class="fa-solid fa-check text-cyber-blue"></i>' : '<div class="bg-cyber-blue/20 text-cyber-blue px-3 py-1 rounded text-[10px] font-bold">GO</div>'}`; list.appendChild(item); }); }
+
+        window.switchTab = (tabId) => { 
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); 
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('text-cyber-blue')); 
+            document.getElementById(`tab-${tabId}`).classList.add('active'); 
+            document.querySelector(`.nav-btn[data-target="${tabId}"]`).classList.add('text-cyber-blue'); 
+            if(tabId === 'earn') { renderTasks(); renderDailyLogin(); } 
         };
 
-        // --- LEADERBOARD MOCKUP ---
-        function renderLeaderboard() {
-            const list = document.getElementById('leaderboard-list');
-            list.innerHTML = '';
-            // Generate some fake users around user score
-            const names = ["Alpha_Node", "CyberNinja", "TON_Whale", "Satoshi_Fan", "PixelPanda", "Future_X", "Red_Baron"];
-            
-            names.forEach((name, index) => {
-                const score = Math.floor(Math.random() * 500000) + 10000;
-                list.innerHTML += `
-                    <div class="glass-card p-3 rounded-xl flex items-center justify-between opacity-70">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold text-xs">${index + 4}</div>
-                            <span class="font-bold text-gray-400 text-sm">${name}</span>
-                        </div>
-                        <span class="text-gray-500 font-bold text-sm">${score.toLocaleString()}</span>
-                    </div>
-                `;
-            });
-        }
+        function showToast(msg, type='success') { const t = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg; t.style.opacity = '1'; t.style.transform = 'translate(-50%, 0)'; setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translate(-50%, -20px)'; }, 2000); }
 
-        // --- TASKS ---
-        const tasks = [
-            { id: 'tg_channel_ofc', title: 'Join Official Channel', reward: 5000, icon: 'fa-telegram', url: 'https://t.me/CyberpandaOFC' },
-            { id: 'youtube', title: 'Subscribe YouTube', reward: 2000, icon: 'fa-youtube', url: 'https://youtube.com' }
-        ];
-
-        function renderTasks() {
-            const list = document.getElementById('task-list'); list.innerHTML = '';
-            tasks.forEach(task => {
-                const isDone = gameData.completedTasks.includes(task.id);
-                const item = document.createElement('div');
-                item.className = `glass-card p-4 rounded-2xl flex items-center justify-between ${isDone ? 'opacity-50' : 'cursor-pointer'}`;
-                if(!isDone) item.onclick = () => {
-                    tg.openLink(task.url); showToast("Verifying...", "info");
-                    setTimeout(() => { gameData.balance += task.reward; gameData.completedTasks.push(task.id); renderTasks(); updateUI(); saveData(); showToast("Credits Added!"); }, 3000);
-                };
-                item.innerHTML = `<div class="flex items-center gap-3"><i class="fa-brands ${task.icon} text-2xl text-cyber-blue"></i><div><h3 class="font-bold text-sm">${task.title}</h3><div class="text-cyber-gold text-xs font-bold">+${task.reward}</div></div></div>${isDone ? '<i class="fa-solid fa-check text-cyber-blue"></i>' : '<div class="bg-cyber-blue/20 text-cyber-blue px-3 py-1 rounded text-[10px] font-bold">GO</div>'}`;
-                list.appendChild(item);
-            });
-        }
-
-        window.switchTab = (tabId) => {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('text-cyber-blue'));
-            document.getElementById(`tab-${tabId}`).classList.add('active');
-            document.querySelector(`.nav-btn[data-target="${tabId}"]`).classList.add('text-cyber-blue');
-            if(tabId === 'earn') { renderTasks(); renderDailyLogin(); }
-            if(tabId === 'rank') { renderLeaderboard(); }
-        };
-
-        function showToast(msg, type='success') {
-            const t = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg;
-            t.style.opacity = '1'; t.style.transform = 'translate(-50%, 0)';
-            setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translate(-50%, -20px)'; }, 2000);
-        }
-
-        // Init
         updateUI(); renderTasks(); renderDailyLogin();
     </script>
 </body>
