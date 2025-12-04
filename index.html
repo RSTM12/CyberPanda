@@ -47,7 +47,7 @@
         .floating-text { position: absolute; color: #00f3ff; font-weight: bold; font-size: 28px; animation: floatUp 0.8s forwards; pointer-events: none; z-index: 50; }
         @keyframes floatUp { to { opacity: 0; transform: translateY(-80px); } }
         
-        #ton-connect-btn { width: 100%; }
+        #ton-connect-btn { width: 100%; position: relative; z-index: 50; }
         #ton-connect-btn button { width: 100%; justify-content: center; font-family: 'Rajdhani', sans-serif; font-weight: bold; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -92,10 +92,9 @@
                 </div>
                 <div class="flex flex-col">
                     <span id="username" class="font-bold tracking-wider text-sm">Agent</span>
-                    <!-- STATUS WALLET DI HEADER -->
                     <div class="flex items-center gap-1">
-                        <div id="wallet-indicator" class="w-2 h-2 rounded-full bg-gray-500 transition-all"></div>
-                        <span id="wallet-status-text" class="text-[10px] text-gray-400 uppercase font-mono">No Wallet</span>
+                        <div id="wallet-indicator" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                        <span id="wallet-status-text" class="text-[10px] text-gray-400 uppercase">No Wallet</span>
                     </div>
                 </div>
             </div>
@@ -122,7 +121,6 @@
                 <p class="text-cyber-blue text-sm tracking-[0.3em] mt-2 uppercase opacity-70">Neural Credits</p>
             </div>
 
-            <!-- KOIN PANDA SVG -->
             <div id="click-btn" class="relative w-72 h-72 cursor-pointer z-10 flex items-center justify-center active:scale-95 transition-transform">
                 <div class="absolute inset-0 rounded-full border-[4px] border-cyber-blue/20 border-dashed animate-spin-slow"></div>
                 <svg viewBox="0 0 200 200" class="w-64 h-64 drop-shadow-[0_0_30px_rgba(255,215,0,0.4)]">
@@ -160,75 +158,75 @@
         <!-- BOOST TAB -->
         <div id="tab-mine" class="tab-content px-4">
             <h2 class="text-2xl font-bold mb-6 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2">Upgrades</h2>
-            <div class="space-y-4">
-                <div onclick="buyUpgrade('multitap')" class="glass-card p-4 rounded-2xl flex items-center justify-between cursor-pointer">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-cyber-dark rounded-xl flex items-center justify-center text-2xl border border-cyber-blue/30">👆</div><div><h3 class="font-bold">Neural Tap</h3><p class="text-xs text-gray-400">+1 Power</p></div></div>
-                    <div class="text-cyber-gold font-bold"><i class="fa-solid fa-coins"></i> <span id="price-multitap">500</span></div>
+            <div class="space-y-4 overflow-y-auto h-[65vh] no-scrollbar pb-20">
+                <div onclick="buyUpgrade('multitap')" id="card-multitap" class="glass-card p-4 rounded-2xl flex items-center justify-between cursor-pointer group hover:border-cyber-blue/50 transition-all">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-cyber-dark rounded-xl flex items-center justify-center text-2xl border border-cyber-blue/30">👆</div><div><h3 class="font-bold">Neural Tap</h3><p class="text-xs text-gray-400">Level <span id="lvl-multitap">1</span></p></div></div>
+                    <div class="text-right"><div class="text-cyber-gold font-bold flex items-center justify-end gap-1"><i class="fa-solid fa-coins text-xs"></i> <span id="price-multitap">500</span></div><p class="text-[10px] text-gray-500">MAX LVL 20</p></div>
                 </div>
-                <div onclick="buyUpgrade('energy')" class="glass-card p-4 rounded-2xl flex items-center justify-between cursor-pointer">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-cyber-dark rounded-xl flex items-center justify-center text-2xl border border-green-500/30">🔋</div><div><h3 class="font-bold">Battery Core</h3><p class="text-xs text-gray-400">+500 Max</p></div></div>
-                    <div class="text-cyber-gold font-bold"><i class="fa-solid fa-coins"></i> <span id="price-energy">1000</span></div>
+                <div onclick="buyUpgrade('energy')" id="card-energy" class="glass-card p-4 rounded-2xl flex items-center justify-between cursor-pointer group hover:border-cyber-blue/50 transition-all">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-cyber-dark rounded-xl flex items-center justify-center text-2xl border border-green-500/30">🔋</div><div><h3 class="font-bold">Battery Core</h3><p class="text-xs text-gray-400">Level <span id="lvl-energy">1</span></p></div></div>
+                    <div class="text-right"><div class="text-cyber-gold font-bold flex items-center justify-end gap-1"><i class="fa-solid fa-coins text-xs"></i> <span id="price-energy">1000</span></div><p class="text-[10px] text-gray-500">MAX LVL 20</p></div>
                 </div>
-                 <div onclick="buyUpgrade('mining_rig')" class="glass-card p-4 rounded-2xl flex items-center justify-between cursor-pointer border border-cyber-gold/30">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-cyber-dark rounded-xl flex items-center justify-center text-2xl border border-cyber-gold/30">⚙️</div><div><h3 class="font-bold text-cyber-gold">Quantum Rig</h3><p class="text-xs text-gray-400">Auto 50/sec</p></div></div>
-                    <div class="text-cyber-gold font-bold"><i class="fa-solid fa-coins"></i> <span id="price-mining_rig">5000</span></div>
+                 <div onclick="buyUpgrade('mining_rig')" id="card-mining_rig" class="glass-card p-4 rounded-2xl flex items-center justify-between cursor-pointer group border border-cyber-gold/30">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-cyber-dark rounded-xl flex items-center justify-center text-2xl border border-cyber-gold/30">⚙️</div><div><h3 class="font-bold text-cyber-gold">Quantum Rig</h3><p class="text-xs text-gray-400">Auto Mining Bot</p></div></div>
+                    <div class="text-right"><div class="text-cyber-gold font-bold flex items-center justify-end gap-1" id="price-wrapper-mining_rig"><i class="fa-solid fa-coins text-xs"></i> <span id="price-mining_rig">5000</span></div><p class="text-[10px] text-gray-500">MAX LVL 1</p></div>
                 </div>
             </div>
         </div>
 
         <!-- EARN TAB -->
         <div id="tab-earn" class="tab-content px-4">
-            <h2 class="text-2xl font-bold mb-4 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2">Daily Rewards</h2>
-            
-            <div class="glass-card p-4 rounded-2xl mb-6 relative z-10">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-white">Login Streak</h3>
-                    <span id="daily-streak-display" class="text-cyber-gold font-bold">Day 1</span>
+            <div class="overflow-y-auto h-[75vh] no-scrollbar pb-20">
+                <h2 class="text-xl font-bold mb-3 text-cyber-blue uppercase">Daily Rewards</h2>
+                <div class="glass-card p-4 rounded-2xl mb-6 relative z-10">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-white">Login Streak</h3>
+                        <span id="daily-streak-display" class="text-cyber-gold font-bold">Day 1</span>
+                    </div>
+                    <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="daily-container"></div>
+                    <button id="daily-claim-btn" class="w-full mt-2 py-2 bg-cyber-blue/20 border border-cyber-blue text-cyber-blue font-bold rounded-xl hover:bg-cyber-blue hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed z-20 relative">CLAIM REWARD</button>
                 </div>
-                <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="daily-container"></div>
-                <button id="daily-claim-btn" class="w-full mt-2 py-2 bg-cyber-blue/20 border border-cyber-blue text-cyber-blue font-bold rounded-xl hover:bg-cyber-blue hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed z-20 relative">
-                    CLAIM REWARD
-                </button>
-            </div>
 
-            <h2 class="text-xl font-bold mb-4 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2">Airdrop Tasks</h2>
-            <div class="space-y-4 pb-4">
-                <div class="glass-card p-5 rounded-2xl border border-cyber-blue/50 relative z-30">
+                <h2 class="text-xl font-bold mb-3 text-cyber-blue uppercase">Invite Friends</h2>
+                <div class="glass-card p-5 rounded-2xl mb-6 border border-purple-500/30 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-purple-500/20 blur-2xl rounded-full"></div>
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-cyber-blue"></div><p class="text-sm font-bold text-gray-300">Share Link <span class="text-cyber-gold ml-auto">+50,000 Credits</span></p></div>
+                        <p class="text-[10px] text-gray-500 italic">*Reward given instantly for sharing (Cooldown 1 hour)</p>
+                    </div>
+                    <button id="invite-btn" onclick="inviteFriends()" class="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl font-bold text-white shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-share-nodes"></i> SHARE & EARN
+                    </button>
+                </div>
+
+                <h2 class="text-xl font-bold mb-3 text-cyber-blue uppercase">Airdrop</h2>
+                <div class="glass-card p-5 rounded-2xl border border-cyber-blue/50 relative z-30 mb-6">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-2xl font-bold">💎</div>
                         <div><h3 class="font-bold text-lg text-white">Connect TON Wallet</h3><p class="text-xs text-gray-400">Link wallet for airdrops.</p></div>
                     </div>
-                    <!-- WADAH TOMBOL TON DI SINI -->
                     <div id="ton-connect-btn"></div>
                 </div>
-                <div id="task-list" class="space-y-4"></div>
+
+                <h2 class="text-xl font-bold mb-3 text-cyber-blue uppercase">Tasks</h2>
+                <div id="task-list" class="space-y-4 pb-10"></div>
             </div>
         </div>
 
-        <!-- LEADERBOARD TAB (FIXED) -->
+        <!-- LEADERBOARD TAB -->
         <div id="tab-rank" class="tab-content px-4">
             <h2 class="text-2xl font-bold mb-6 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2 flex justify-between">
                 <span>Leaderboard</span>
                 <span class="text-xs text-gray-400 mt-2 font-normal lowercase">global ranking</span>
             </h2>
-            
-            <!-- KARTU SAYA (USER) -->
             <div class="glass-card p-4 rounded-2xl mb-6 border border-cyber-gold/50 flex items-center justify-between bg-cyber-gold/10">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-full bg-cyber-gold flex items-center justify-center text-black font-bold text-xl border-2 border-white">You</div>
-                    <div>
-                        <!-- ID INI HARUS ADA SUPAYA BISA DIUPDATE JS -->
-                        <h3 class="font-bold text-white" id="rank-username">Agent</h3>
-                        <p class="text-xs text-cyber-gold" id="rank-balance">0 Credits</p>
-                    </div>
+                    <div><h3 class="font-bold text-white" id="rank-username">Agent</h3><p class="text-xs text-cyber-gold" id="rank-balance">0 Credits</p></div>
                 </div>
                 <div class="text-right"><p class="text-[10px] text-gray-400">LEAGUE</p><p class="font-bold text-cyber-blue">ELITE</p></div>
             </div>
-
-            <!-- FAKE TOP PLAYERS -->
-            <div class="space-y-3 overflow-y-auto pb-4 h-[55vh]" id="leaderboard-list">
-                 <!-- Generated by JS -->
-            </div>
+            <div class="space-y-3 overflow-y-auto pb-4 h-[55vh]" id="leaderboard-list"></div>
         </div>
     </div>
 
@@ -248,8 +246,7 @@
         const tg = window.Telegram.WebApp; tg.ready(); tg.expand();
         if (tg.setHeaderColor) tg.setHeaderColor('#020205');
 
-        // --- 1. CONFIG MANIFEST (GANTI LINK INI!) ---
-        // Ganti dengan link GitHub Pages Bos yang benar
+        // *** GANTI LINK DI BAWAH INI DENGAN LINK GITHUB PAGES BOS YANG BENAR ***
         const MANIFEST_URL = 'https://rstm12.github.io/CyberPanda/tonconnect-manifest.json'; 
 
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -261,58 +258,45 @@
 
         const defaultData = { 
             hasStarted: false, balance: 0, energy: 1000, maxEnergy: 1000, clickPower: 1, profitPerSec: 1, lastLogin: Date.now(), 
-            upgrades: { multitap: { level: 1, price: 500 }, energy: { level: 1, price: 1000 }, mining_rig: { level: 0, price: 5000 } }, 
+            upgrades: { 
+                multitap: { level: 1, price: 500, maxLevel: 20 }, 
+                energy: { level: 1, price: 1000, maxLevel: 20 }, 
+                mining_rig: { level: 0, price: 5000, maxLevel: 1 } 
+            }, 
             completedTasks: [],
-            daily: { lastClaimTime: 0, streak: 0 }
+            daily: { lastClaimTime: 0, streak: 0 },
+            lastShareTime: 0
         };
         
         let savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
         let gameData = { ...defaultData, ...savedData };
-        if (!gameData.daily) gameData.daily = { lastClaimTime: 0, streak: 0 }; 
+        if (!gameData.upgrades.multitap.maxLevel) { gameData.upgrades.multitap.maxLevel = 20; gameData.upgrades.energy.maxLevel = 20; gameData.upgrades.mining_rig.maxLevel = 1; }
+        if (!gameData.lastShareTime) gameData.lastShareTime = 0;
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(gameData)); }
 
-        // --- WALLET & UI LOGIC (FIXED) ---
-        const walletIndicator = document.getElementById('wallet-indicator');
-        const walletStatusText = document.getElementById('wallet-status-text');
-
-        // Fungsi Update UI Wallet
-        function updateWalletUI(wallet) {
-            if (wallet) {
-                // Konek
-                walletIndicator.classList.remove('bg-gray-500'); 
-                walletIndicator.classList.add('bg-green-500', 'shadow-[0_0_10px_#00ff00]');
-                
-                const addr = wallet.account.address;
-                const shortAddr = addr.slice(0, 4) + '...' + addr.slice(-4);
-                
-                // Update text di header
-                walletStatusText.innerText = shortAddr;
-                walletStatusText.classList.add('text-green-400');
-            } else {
-                // Disconnect
-                walletIndicator.classList.add('bg-gray-500'); 
-                walletIndicator.classList.remove('bg-green-500', 'shadow-[0_0_10px_#00ff00]');
-                
-                walletStatusText.innerText = "No Wallet";
-                walletStatusText.classList.remove('text-green-400');
-            }
-        }
-
-        // Listener Status
-        tonConnectUI.onStatusChange(wallet => {
-            updateWalletUI(wallet);
-        });
-
-        // --- INIT DATA ---
         const welcomeScreen = document.getElementById('welcome-screen');
         const userName = tg.initDataUnsafe?.user?.first_name || "Agent";
         document.getElementById('welcome-name').innerText = userName;
         document.getElementById('username').innerText = userName;
-        document.getElementById('rank-username').innerText = userName; // Set Nama di Rank
+        document.getElementById('rank-username').innerText = userName;
 
         if (gameData.hasStarted) { welcomeScreen.style.display = 'none'; }
         window.startGame = () => { welcomeScreen.classList.add('hidden-screen'); gameData.hasStarted = true; saveData(); setTimeout(() => welcomeScreen.style.display = 'none', 600); };
+
+        const walletIndicator = document.getElementById('wallet-indicator');
+        const walletStatusText = document.getElementById('wallet-status-text');
+        function updateWalletUI(wallet) {
+            if (wallet) {
+                walletIndicator.classList.remove('bg-gray-500'); walletIndicator.classList.add('bg-green-500', 'shadow-[0_0_10px_#00ff00]');
+                const addr = wallet.account.address; walletStatusText.innerText = addr.slice(0, 4) + '...' + addr.slice(-4); walletStatusText.classList.add('text-green-400');
+            } else {
+                walletIndicator.classList.add('bg-gray-500'); walletIndicator.classList.remove('bg-green-500', 'shadow-[0_0_10px_#00ff00]');
+                walletStatusText.innerText = "No Wallet"; walletStatusText.classList.remove('text-green-400');
+            }
+        }
+        tonConnectUI.onStatusChange(wallet => updateWalletUI(wallet));
+        if (tonConnectUI.wallet) updateWalletUI(tonConnectUI.wallet);
 
         const now = Date.now();
         if (gameData.hasStarted && (now - gameData.lastLogin) > 0) gameData.balance += Math.floor((now - gameData.lastLogin)/1000) * gameData.profitPerSec;
@@ -328,14 +312,22 @@
             energyDisplay.innerText = `${Math.floor(gameData.energy)} / ${gameData.maxEnergy}`; 
             energyBar.style.width = `${(gameData.energy / gameData.maxEnergy) * 100}%`; 
             profitEl.innerText = `+${gameData.profitPerSec}`;
-            
-            document.getElementById('price-multitap').innerText = gameData.upgrades.multitap.price.toLocaleString();
-            document.getElementById('price-energy').innerText = gameData.upgrades.energy.price.toLocaleString();
-            const rig = gameData.upgrades.mining_rig;
-            document.getElementById('price-mining_rig').parentNode.parentNode.innerHTML = rig.level > 0 ? '<span class="text-cyber-blue font-bold">ACTIVE</span>' : `<div class="text-cyber-gold font-bold"><i class="fa-solid fa-coins"></i> <span id="price-mining_rig">${rig.price}</span></div>`;
-
-            // UPDATE RANK CARD (SUPAYA GAK HILANG)
             document.getElementById('rank-balance').innerText = Math.floor(gameData.balance).toLocaleString() + " Credits";
+            updateUpgradeCard('multitap'); updateUpgradeCard('energy'); updateUpgradeCard('mining_rig');
+            updateInviteBtn();
+        }
+
+        function updateUpgradeCard(type) {
+            const up = gameData.upgrades[type];
+            const priceEl = document.getElementById(`price-${type}`);
+            const lvlEl = document.getElementById(`lvl-${type}`); 
+            const cardEl = document.getElementById(`card-${type}`);
+            if (lvlEl) lvlEl.innerText = up.level;
+            if (up.level >= up.maxLevel) {
+                if (type === 'mining_rig') document.getElementById('price-wrapper-mining_rig').innerHTML = '<span class="text-cyber-blue font-bold">ACTIVE</span>';
+                else priceEl.parentNode.innerHTML = '<span class="text-gray-500 font-bold">MAX</span>';
+                cardEl.classList.add('opacity-50', 'cursor-not-allowed', 'border-gray-700'); cardEl.onclick = null;
+            } else { if(priceEl) priceEl.innerText = up.price.toLocaleString(); }
         }
 
         setInterval(() => { if (gameData.hasStarted) { gameData.balance += gameData.profitPerSec; if (gameData.energy < gameData.maxEnergy) gameData.energy += 2; if (gameData.energy > gameData.maxEnergy) gameData.energy = gameData.maxEnergy; gameData.lastLogin = Date.now(); saveData(); updateUI(); } }, 1000);
@@ -344,26 +336,56 @@
             if (gameData.energy >= gameData.clickPower) { gameData.balance += gameData.clickPower; gameData.energy -= gameData.clickPower; if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy'); updateUI(); const el = document.createElement('div'); el.className = 'floating-text'; el.innerText = `+${gameData.clickPower}`; el.style.left = `${e.clientX}px`; el.style.top = `${e.clientY - 80}px`; document.body.appendChild(el); setTimeout(() => el.remove(), 800); } else if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
         });
 
-        window.buyUpgrade = (type) => { const up = gameData.upgrades[type]; if (type === 'mining_rig' && up.level > 0) return showToast('Already Active!', 'error'); if (gameData.balance >= up.price) { gameData.balance -= up.price; if (type === 'mining_rig') { up.level = 1; gameData.profitPerSec = 50; showToast('Rig Activated!');} else { up.level++; up.price = Math.floor(up.price * 1.6); if(type=='multitap') gameData.clickPower++; if(type=='energy') gameData.maxEnergy+=500; showToast('Upgraded!');} updateUI(); saveData(); } else showToast('Need Credits!', 'error'); };
+        window.buyUpgrade = (type) => { 
+            const up = gameData.upgrades[type]; 
+            if (up.level >= up.maxLevel) return; 
+            if (gameData.balance >= up.price) { 
+                gameData.balance -= up.price; 
+                if (type === 'mining_rig') { up.level = 1; gameData.profitPerSec = 50; showToast('Rig Activated!'); } 
+                else { up.level++; up.price = Math.floor(up.price * 1.6); if(type=='multitap') gameData.clickPower++; if(type=='energy') gameData.maxEnergy+=500; showToast('Upgraded!'); } 
+                updateUI(); saveData(); 
+            } else showToast('Need Credits!', 'error'); 
+        };
 
-        // DAILY
+        // --- INVITE SYSTEM ---
+        function updateInviteBtn() {
+            const btn = document.getElementById('invite-btn');
+            const now = Date.now();
+            const cooldown = 60 * 60 * 1000;
+            if (now - gameData.lastShareTime < cooldown) {
+                const remainingMin = Math.ceil((cooldown - (now - gameData.lastShareTime)) / 60000);
+                btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-clock"></i> Wait ${remainingMin} min`;
+                btn.classList.add('opacity-50', 'cursor-not-allowed'); btn.classList.remove('active:scale-95');
+            } else {
+                btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-share-nodes"></i> SHARE & EARN`;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed'); btn.classList.add('active:scale-95');
+            }
+        }
+
+        window.inviteFriends = () => {
+            const now = Date.now();
+            if (now - gameData.lastShareTime < 3600000) return showToast("Wait cooldown!", "error");
+            gameData.balance += 50000; gameData.lastShareTime = now; saveData(); updateUI(); showToast("Reward +50,000 for sharing!");
+            const botUsername = 'GameKoinSayaBot'; // GANTI PAKE USERNAME BOT BOS
+            const inviteLink = `https://t.me/${botUsername}?start=ref_${tg.initDataUnsafe?.user?.id || 'guest'}`;
+            const shareText = `Join CyberPanda Kombat! Mine Neural Credits and get Airdrop. 🚀`;
+            tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(shareText)}`);
+        };
+
+        // --- DAILY LOGIN ---
         const dailyRewards = [500, 1000, 2500, 5000, 10000, 25000, 100000];
         document.getElementById('daily-claim-btn').addEventListener('click', function() { claimDaily(); });
-
         function renderDailyLogin() {
             const container = document.getElementById('daily-container');
             const streakDisplay = document.getElementById('daily-streak-display');
             const claimBtn = document.getElementById('daily-claim-btn');
             container.innerHTML = '';
-            
             const lastClaimDate = new Date(gameData.daily.lastClaimTime); lastClaimDate.setHours(0,0,0,0);
             const today = new Date(); today.setHours(0,0,0,0);
             const isClaimable = lastClaimDate.getTime() < today.getTime();
-            
             const diffTime = Math.abs(today - lastClaimDate);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
             if (diffDays > 1 && gameData.daily.lastClaimTime !== 0) { if(isClaimable) gameData.daily.streak = 0; }
-
             streakDisplay.innerText = `Day ${gameData.daily.streak + 1}`;
             for (let i = 0; i < 7; i++) {
                 let statusClass = 'bg-gray-800 border-gray-700 opacity-50';
@@ -374,7 +396,6 @@
             if (isClaimable) { claimBtn.disabled = false; claimBtn.innerText = "CLAIM REWARD"; claimBtn.classList.remove('opacity-50', 'cursor-not-allowed'); } 
             else { claimBtn.disabled = true; claimBtn.innerText = "COME BACK TOMORROW"; claimBtn.classList.add('opacity-50', 'cursor-not-allowed'); }
         }
-
         function claimDaily() {
             const lastClaimDate = new Date(gameData.daily.lastClaimTime); lastClaimDate.setHours(0,0,0,0);
             const today = new Date(); today.setHours(0,0,0,0);
@@ -387,37 +408,91 @@
             if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         }
 
-        // LEADERBOARD LIST
+        // --- TASK VERIFICATION SYSTEM (SMART DELAY) ---
+        const tasks = [{ id: 'tg_channel_ofc', title: 'Join Official Channel', reward: 5000, icon: 'fa-telegram', url: 'https://t.me/CyberpandaOFC' }, { id: 'youtube', title: 'Subscribe YouTube', reward: 2000, icon: 'fa-youtube', url: 'https://youtube.com' }];
+        
+        function renderTasks() { 
+            const list = document.getElementById('task-list'); 
+            list.innerHTML = ''; 
+            tasks.forEach(task => { 
+                const isDone = gameData.completedTasks.includes(task.id); 
+                const item = document.createElement('div'); 
+                item.className = `glass-card p-4 rounded-2xl flex items-center justify-between ${isDone ? 'opacity-50' : 'cursor-pointer'}`; 
+                
+                // Button State Logic
+                let btnHtml = '<div class="bg-cyber-blue/20 text-cyber-blue px-3 py-1 rounded text-[10px] font-bold">GO</div>';
+                if(isDone) btnHtml = '<i class="fa-solid fa-check text-cyber-blue"></i>';
+                
+                if(!isDone) {
+                    item.onclick = (e) => startTaskVerification(task.id, e.currentTarget);
+                }
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <i class="fa-brands ${task.icon} text-2xl text-cyber-blue"></i>
+                        <div><h3 class="font-bold text-sm">${task.title}</h3><div class="text-cyber-gold text-xs font-bold">+${task.reward}</div></div>
+                    </div>
+                    <div class="task-status">${btnHtml}</div>
+                `; 
+                list.appendChild(item); 
+            }); 
+        }
+
+        function startTaskVerification(taskId, element) {
+            const statusDiv = element.querySelector('.task-status');
+            const task = tasks.find(t => t.id === taskId);
+            
+            // 1. Open Link
+            tg.openLink(task.url);
+            
+            // 2. Change UI to "Checking"
+            statusDiv.innerHTML = '<div class="bg-yellow-500/20 text-yellow-500 px-3 py-1 rounded text-[10px] font-bold animate-pulse">Checking... 15s</div>';
+            element.onclick = null; // Disable click temp
+
+            // 3. Wait 15 Seconds (Psychological Verification)
+            let seconds = 15;
+            const timer = setInterval(() => {
+                seconds--;
+                if (seconds > 0) {
+                    statusDiv.innerHTML = `<div class="bg-yellow-500/20 text-yellow-500 px-3 py-1 rounded text-[10px] font-bold animate-pulse">Checking... ${seconds}s</div>`;
+                } else {
+                    clearInterval(timer);
+                    // 4. Show Claim Button
+                    statusDiv.innerHTML = '<div class="bg-green-500 text-black px-3 py-1 rounded text-[10px] font-bold hover:bg-green-400 transition">CLAIM</div>';
+                    // Re-enable click for claiming
+                    element.onclick = () => claimTaskReward(taskId);
+                    showToast("Verification Complete! Tap to Claim.");
+                    if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                }
+            }, 1000);
+        }
+
+        function claimTaskReward(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            gameData.balance += task.reward; 
+            gameData.completedTasks.push(taskId); 
+            renderTasks(); 
+            updateUI(); 
+            saveData(); 
+            showToast(`Task Complete! +${task.reward}`);
+            if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        }
+
         function renderLeaderboard() {
             const list = document.getElementById('leaderboard-list'); list.innerHTML = '';
             const names = ["CryptoWhale_01", "TonMaster_GEM", "PandaKing", "Satoshi_Fan", "PixelPanda", "Future_X", "Red_Baron"];
-            const scores = [99500000, 88200000, 76000000, 50000000, 42000000, 30000000, 15000000];
-            names.forEach((name, i) => {
-                 list.innerHTML += `<div class="glass-card p-3 rounded-xl flex items-center justify-between opacity-80"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold text-xs">${i + 1}</div><span class="font-bold text-gray-200 text-sm">${name}</span></div><span class="text-cyber-gold font-bold text-sm">${scores[i].toLocaleString()}</span></div>`;
-            });
+            const scores = [99571000, 88247000, 76690000, 53300000, 42770000, 38100000, 15690000];
+            names.forEach((name, i) => { list.innerHTML += `<div class="glass-card p-3 rounded-xl flex items-center justify-between opacity-80"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold text-xs">${i + 1}</div><span class="font-bold text-gray-200 text-sm">${name}</span></div><span class="text-cyber-gold font-bold text-sm">${scores[i].toLocaleString()}</span></div>`; });
         }
 
-        const tasks = [{ id: 'tg_channel_ofc', title: 'Join Official Channel', reward: 5000, icon: 'fa-telegram', url: 'https://t.me/CyberpandaOFC' }, { id: 'youtube', title: 'Subscribe YouTube', reward: 2000, icon: 'fa-youtube', url: 'https://youtube.com' }];
-        function renderTasks() { const list = document.getElementById('task-list'); list.innerHTML = ''; tasks.forEach(task => { const isDone = gameData.completedTasks.includes(task.id); const item = document.createElement('div'); item.className = `glass-card p-4 rounded-2xl flex items-center justify-between ${isDone ? 'opacity-50' : 'cursor-pointer'}`; if(!isDone) item.onclick = () => { tg.openLink(task.url); showToast("Verifying...", "info"); setTimeout(() => { gameData.balance += task.reward; gameData.completedTasks.push(task.id); renderTasks(); updateUI(); saveData(); showToast("Credits Added!"); }, 3000); }; item.innerHTML = `<div class="flex items-center gap-3"><i class="fa-brands ${task.icon} text-2xl text-cyber-blue"></i><div><h3 class="font-bold text-sm">${task.title}</h3><div class="text-cyber-gold text-xs font-bold">+${task.reward}</div></div></div>${isDone ? '<i class="fa-solid fa-check text-cyber-blue"></i>' : '<div class="bg-cyber-blue/20 text-cyber-blue px-3 py-1 rounded text-[10px] font-bold">GO</div>'}`; list.appendChild(item); }); }
-
         window.switchTab = (tabId) => { 
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); 
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('text-cyber-blue')); 
-            document.getElementById(`tab-${tabId}`).classList.add('active'); 
-            document.querySelector(`.nav-btn[data-target="${tabId}"]`).classList.add('text-cyber-blue'); 
-            if(tabId === 'earn') { renderTasks(); renderDailyLogin(); } 
-            if(tabId === 'rank') { renderLeaderboard(); updateUI(); }
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('text-cyber-blue')); document.getElementById(`tab-${tabId}`).classList.add('active'); document.querySelector(`.nav-btn[data-target="${tabId}"]`).classList.add('text-cyber-blue'); 
+            if(tabId === 'earn') { renderTasks(); renderDailyLogin(); updateInviteBtn(); } if(tabId === 'rank') { renderLeaderboard(); updateUI(); }
         };
 
         function showToast(msg, type='success') { const t = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg; t.style.opacity = '1'; t.style.transform = 'translate(-50%, 0)'; setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translate(-50%, -20px)'; }, 2000); }
 
-        // CHECK WALLET ON LOAD
-        // Kita panggil manual juga saat load untuk memastikan status terupdate
-        if (tonConnectUI.wallet) {
-            updateWalletUI(tonConnectUI.wallet);
-        }
-
-        updateUI(); renderTasks(); renderDailyLogin();
+        updateUI(); renderTasks(); renderDailyLogin(); updateInviteBtn();
     </script>
 </body>
 </html>
