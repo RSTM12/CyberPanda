@@ -37,12 +37,20 @@
             background: rgba(20, 20, 35, 0.6); backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
+        .nav-glass {
+            background: rgba(10, 10, 18, 0.95); backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
         .tab-content { display: none; height: 100%; }
         .tab-content.active { display: flex; flex-direction: column; }
         .hidden-screen { opacity: 0; visibility: hidden; pointer-events: none; transition: 0.5s; }
         .floating-text { position: absolute; color: #00f3ff; font-weight: bold; font-size: 28px; animation: floatUp 0.8s forwards; pointer-events: none; z-index: 50; }
         @keyframes floatUp { to { opacity: 0; transform: translateY(-80px); } }
         #ton-connect-btn button { width: 100%; justify-content: center; font-family: 'Rajdhani', sans-serif; font-weight: bold; }
+        
+        /* Scrollbar Hide */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="h-screen flex flex-col font-sans">
@@ -50,17 +58,17 @@
     <!-- WELCOME SCREEN -->
     <div id="welcome-screen" class="fixed inset-0 z-[999] bg-[#020205] flex flex-col items-center justify-center p-6 text-center transition-all duration-500">
         <div class="relative z-10 flex flex-col items-center">
-            <!-- PANDA SVG (GAMBAR PAKE KODE - ANTI RUSAK) -->
+            <!-- PANDA SVG -->
             <div class="w-32 h-32 mb-6 rounded-full bg-gradient-to-b from-cyber-blue to-cyber-purple p-1 animate-pulse-glow">
                 <div class="w-full h-full bg-black rounded-full flex items-center justify-center overflow-hidden">
                     <svg viewBox="0 0 200 200" class="w-24 h-24">
                         <circle cx="100" cy="100" r="90" fill="#fff"/>
-                        <circle cx="60" cy="70" r="25" fill="#000"/> <!-- Mata Kiri -->
-                        <circle cx="140" cy="70" r="25" fill="#000"/> <!-- Mata Kanan -->
-                        <ellipse cx="100" cy="110" rx="15" ry="10" fill="#000"/> <!-- Hidung -->
-                        <path d="M 80 130 Q 100 150 120 130" stroke="#000" stroke-width="5" fill="none"/> <!-- Mulut -->
-                        <circle cx="30" cy="50" r="20" fill="#000"/> <!-- Telinga Kiri -->
-                        <circle cx="170" cy="50" r="20" fill="#000"/> <!-- Telinga Kanan -->
+                        <circle cx="60" cy="70" r="25" fill="#000"/>
+                        <circle cx="140" cy="70" r="25" fill="#000"/>
+                        <ellipse cx="100" cy="110" rx="15" ry="10" fill="#000"/>
+                        <path d="M 80 130 Q 100 150 120 130" stroke="#000" stroke-width="5" fill="none"/>
+                        <circle cx="30" cy="50" r="20" fill="#000"/>
+                        <circle cx="170" cy="50" r="20" fill="#000"/>
                     </svg>
                 </div>
             </div>
@@ -113,12 +121,10 @@
                 <p class="text-cyber-blue text-sm tracking-[0.3em] mt-2 uppercase opacity-70">Neural Credits</p>
             </div>
 
-            <!-- KOIN PANDA SVG (ANTI RUSAK) -->
+            <!-- KOIN PANDA SVG -->
             <div id="click-btn" class="relative w-72 h-72 cursor-pointer z-10 flex items-center justify-center active:scale-95 transition-transform">
                 <div class="absolute inset-0 rounded-full border-[4px] border-cyber-blue/20 border-dashed animate-spin-slow"></div>
-                <!-- Koin SVG -->
                 <svg viewBox="0 0 200 200" class="w-64 h-64 drop-shadow-[0_0_30px_rgba(255,215,0,0.4)]">
-                    <!-- Lingkaran Emas -->
                     <defs>
                         <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
@@ -128,17 +134,15 @@
                     </defs>
                     <circle cx="100" cy="100" r="95" fill="url(#goldGrad)" stroke="#B8860B" stroke-width="2"/>
                     <circle cx="100" cy="100" r="85" fill="#1a1a1a" stroke="#B8860B" stroke-width="1"/>
-                    
-                    <!-- Muka Panda di Dalam Koin -->
                     <g transform="translate(25, 25) scale(0.75)">
-                         <circle cx="30" cy="40" r="25" fill="#333"/> <!-- Kuping -->
+                         <circle cx="30" cy="40" r="25" fill="#333"/>
                          <circle cx="170" cy="40" r="25" fill="#333"/>
-                         <circle cx="100" cy="100" r="80" fill="#fff"/> <!-- Muka -->
-                         <ellipse cx="65" cy="85" rx="25" ry="30" fill="#000"/> <!-- Mata -->
+                         <circle cx="100" cy="100" r="80" fill="#fff"/>
+                         <ellipse cx="65" cy="85" rx="25" ry="30" fill="#000"/>
                          <ellipse cx="135" cy="85" rx="25" ry="30" fill="#000"/>
-                         <circle cx="65" cy="80" r="8" fill="#fff"/> <!-- Pupil -->
+                         <circle cx="65" cy="80" r="8" fill="#fff"/>
                          <circle cx="135" cy="80" r="8" fill="#fff"/>
-                         <ellipse cx="100" cy="120" rx="15" ry="10" fill="#000"/> <!-- Hidung -->
+                         <ellipse cx="100" cy="120" rx="15" ry="10" fill="#000"/>
                          <path d="M 85 145 Q 100 155 115 145" stroke="#000" stroke-width="5" fill="none"/>
                     </g>
                 </svg>
@@ -171,10 +175,27 @@
             </div>
         </div>
 
-        <!-- EARN TAB -->
+        <!-- EARN TAB (DAILY LOGIN IS HERE) -->
         <div id="tab-earn" class="tab-content px-4">
-            <h2 class="text-2xl font-bold mb-6 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2">Airdrop Tasks</h2>
-            <div class="space-y-6 pb-4">
+            <h2 class="text-2xl font-bold mb-4 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2">Daily Rewards</h2>
+            
+            <!-- DAILY LOGIN SECTION -->
+            <div class="glass-card p-4 rounded-2xl mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-white">Login Streak</h3>
+                    <span id="daily-streak-display" class="text-cyber-gold font-bold">Day 1</span>
+                </div>
+                <!-- Horizontal Scroll for Days -->
+                <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="daily-container">
+                    <!-- Daily items injected by JS -->
+                </div>
+                <button onclick="claimDaily()" id="daily-claim-btn" class="w-full mt-2 py-2 bg-cyber-blue/20 border border-cyber-blue text-cyber-blue font-bold rounded-xl hover:bg-cyber-blue hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    CLAIM REWARD
+                </button>
+            </div>
+
+            <h2 class="text-xl font-bold mb-4 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2">Airdrop Tasks</h2>
+            <div class="space-y-4 pb-4">
                 <div class="glass-card p-5 rounded-2xl border border-cyber-blue/50 relative">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-2xl font-bold">💎</div>
@@ -182,20 +203,74 @@
                     </div>
                     <div id="ton-connect-btn"></div>
                 </div>
-                <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mt-4">Social Missions</h3>
                 <div id="task-list" class="space-y-4"></div>
+            </div>
+        </div>
+
+        <!-- NEW TAB: LEADERBOARD -->
+        <div id="tab-rank" class="tab-content px-4">
+            <h2 class="text-2xl font-bold mb-6 text-cyber-blue uppercase border-b border-cyber-blue/20 pb-2 flex justify-between">
+                <span>Leaderboard</span>
+                <span class="text-xs text-gray-400 mt-2 font-normal lowercase">global ranking</span>
+            </h2>
+            
+            <!-- My Rank Card -->
+            <div class="glass-card p-4 rounded-2xl mb-6 border border-cyber-gold/50 flex items-center justify-between bg-cyber-gold/10">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-cyber-gold flex items-center justify-center text-black font-bold text-xl border-2 border-white">
+                        #99+
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white" id="rank-username">You</h3>
+                        <p class="text-xs text-cyber-gold" id="rank-balance">0 Credits</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-[10px] text-gray-400">LEAGUE</p>
+                    <p class="font-bold text-cyber-blue">NOVICE</p>
+                </div>
+            </div>
+
+            <!-- Fake Top Players -->
+            <div class="space-y-3 overflow-y-auto pb-4 h-[60vh]">
+                <!-- Static High Rankers -->
+                <div class="glass-card p-3 rounded-xl flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold">1</div>
+                        <span class="font-bold text-gray-200">CryptoWhale_01</span>
+                    </div>
+                    <span class="text-cyber-gold font-bold text-sm">99,500,000</span>
+                </div>
+                <div class="glass-card p-3 rounded-xl flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-400 text-black flex items-center justify-center font-bold">2</div>
+                        <span class="font-bold text-gray-200">TonMaster_GEM</span>
+                    </div>
+                    <span class="text-cyber-gold font-bold text-sm">88,200,000</span>
+                </div>
+                <div class="glass-card p-3 rounded-xl flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-orange-700 text-black flex items-center justify-center font-bold">3</div>
+                        <span class="font-bold text-gray-200">PandaKing</span>
+                    </div>
+                    <span class="text-cyber-gold font-bold text-sm">76,000,000</span>
+                </div>
+                <!-- Random generated list below -->
+                <div id="leaderboard-list" class="space-y-3"></div>
             </div>
         </div>
     </div>
 
-    <!-- NAV BAR & TOAST -->
+    <!-- NAV BAR (NOW 4 BUTTONS) -->
     <div class="fixed bottom-6 left-6 right-6 z-50">
         <div class="nav-glass glass-card rounded-full p-2 flex justify-around items-center">
-            <button onclick="switchTab('home')" class="nav-btn text-cyber-blue flex flex-col items-center w-1/3" data-target="home"><i class="fa-solid fa-microchip text-xl mb-1"></i><span class="text-[10px] font-bold">CORE</span></button>
-            <button onclick="switchTab('mine')" class="nav-btn text-gray-500 flex flex-col items-center w-1/3" data-target="mine"><i class="fa-solid fa-rocket text-xl mb-1"></i><span class="text-[10px] font-bold">BOOST</span></button>
-            <button onclick="switchTab('earn')" class="nav-btn text-gray-500 flex flex-col items-center w-1/3" data-target="earn"><i class="fa-solid fa-satellite-dish text-xl mb-1"></i><span class="text-[10px] font-bold">EARN</span></button>
+            <button onclick="switchTab('home')" class="nav-btn text-cyber-blue flex flex-col items-center w-1/4" data-target="home"><i class="fa-solid fa-microchip text-xl mb-1"></i><span class="text-[9px] font-bold">CORE</span></button>
+            <button onclick="switchTab('mine')" class="nav-btn text-gray-500 flex flex-col items-center w-1/4" data-target="mine"><i class="fa-solid fa-rocket text-xl mb-1"></i><span class="text-[9px] font-bold">BOOST</span></button>
+            <button onclick="switchTab('earn')" class="nav-btn text-gray-500 flex flex-col items-center w-1/4" data-target="earn"><i class="fa-solid fa-gift text-xl mb-1"></i><span class="text-[9px] font-bold">EARN</span></button>
+            <button onclick="switchTab('rank')" class="nav-btn text-gray-500 flex flex-col items-center w-1/4" data-target="rank"><i class="fa-solid fa-trophy text-xl mb-1"></i><span class="text-[9px] font-bold">RANK</span></button>
         </div>
     </div>
+    
     <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 glass-card px-6 py-3 rounded-full border-cyber-blue/50 opacity-0 pointer-events-none z-[100] flex items-center gap-3 transition-all duration-300"><i class="fa-solid fa-circle-check text-cyber-blue"></i><span id="toast-msg" class="text-sm font-bold">Success</span></div>
 
     <script>
@@ -207,25 +282,48 @@
             buttonRootId: 'ton-connect-btn'
         });
 
-        // --- SOLUSI DATA RESET: GUNAKAN KUNCI PERMANEN ---
-        // Saya ganti nama kuncinya jadi 'cyberPanda_LIVE_PERMANENT'.
-        // Ini akan reset sekali sekarang (karena nama baru), tapi besok-besok gak bakal reset lagi.
+        // --- DATA MANAGEMENT (SAFE MERGE) ---
         const STORAGE_KEY = 'cyberPanda_LIVE_PERMANENT';
 
-        const defaultData = { hasStarted: false, balance: 0, energy: 1000, maxEnergy: 1000, clickPower: 1, profitPerSec: 1, lastLogin: Date.now(), upgrades: { multitap: { level: 1, price: 500 }, energy: { level: 1, price: 1000 }, mining_rig: { level: 0, price: 5000 } }, completedTasks: [] };
+        // Struktur Data Default (Termasuk field baru 'daily')
+        const defaultData = { 
+            hasStarted: false, 
+            balance: 0, 
+            energy: 1000, 
+            maxEnergy: 1000, 
+            clickPower: 1, 
+            profitPerSec: 1, 
+            lastLogin: Date.now(), 
+            upgrades: { 
+                multitap: { level: 1, price: 500 }, 
+                energy: { level: 1, price: 1000 }, 
+                mining_rig: { level: 0, price: 5000 } 
+            }, 
+            completedTasks: [],
+            // Data Baru untuk Daily Login
+            daily: {
+                lastClaimTime: 0,
+                streak: 0
+            }
+        };
         
-        // Load data
-        let gameData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultData;
+        // Load data lama
+        let savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
         
-        // Save Function (Biar gak ngetik ulang terus)
+        // GABUNGKAN DATA: Kalau user lama belum punya fitur 'daily', kita tambahkan otomatis tanpa hapus balance
+        let gameData = { ...defaultData, ...savedData };
+        if (!gameData.daily) gameData.daily = { lastClaimTime: 0, streak: 0 }; // Safety check for old users
+
         function saveData() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(gameData));
         }
 
+        // --- WELCOME & INIT ---
         const welcomeScreen = document.getElementById('welcome-screen');
         const userName = tg.initDataUnsafe?.user?.first_name || "Agent";
         document.getElementById('welcome-name').innerText = userName;
         document.getElementById('username').innerText = userName;
+        document.getElementById('rank-username').innerText = userName; // Set name in rank tab
 
         if (gameData.hasStarted) { welcomeScreen.style.display = 'none'; }
 
@@ -237,6 +335,7 @@
             setTimeout(() => welcomeScreen.style.display = 'none', 600);
         };
 
+        // --- TON CONNECT ---
         const walletIndicator = document.getElementById('wallet-indicator');
         const walletStatusText = document.getElementById('wallet-status-text');
 
@@ -250,18 +349,28 @@
             }
         });
 
+        // --- OFFLINE INCOME ---
         const now = Date.now();
         if (gameData.hasStarted && (now - gameData.lastLogin) > 0) gameData.balance += Math.floor((now - gameData.lastLogin)/1000) * gameData.profitPerSec;
         gameData.lastLogin = now;
 
+        // --- UI UPDATES ---
         const balanceEl = document.getElementById('balance'); const energyDisplay = document.getElementById('energy-display'); const energyBar = document.getElementById('energy-bar'); const profitEl = document.getElementById('profit-per-sec');
         
         function updateUI() {
-            balanceEl.innerText = Math.floor(gameData.balance).toLocaleString(); energyDisplay.innerText = `${Math.floor(gameData.energy)} / ${gameData.maxEnergy}`; energyBar.style.width = `${(gameData.energy / gameData.maxEnergy) * 100}%`; profitEl.innerText = `+${gameData.profitPerSec}`;
+            balanceEl.innerText = Math.floor(gameData.balance).toLocaleString(); 
+            energyDisplay.innerText = `${Math.floor(gameData.energy)} / ${gameData.maxEnergy}`; 
+            energyBar.style.width = `${(gameData.energy / gameData.maxEnergy) * 100}%`; 
+            profitEl.innerText = `+${gameData.profitPerSec}`;
+            
             document.getElementById('price-multitap').innerText = gameData.upgrades.multitap.price.toLocaleString();
             document.getElementById('price-energy').innerText = gameData.upgrades.energy.price.toLocaleString();
+            
             const rig = gameData.upgrades.mining_rig;
             document.getElementById('price-mining_rig').parentNode.parentNode.innerHTML = rig.level > 0 ? '<span class="text-cyber-blue font-bold">ACTIVE</span>' : `<div class="text-cyber-gold font-bold"><i class="fa-solid fa-coins"></i> <span id="price-mining_rig">${rig.price}</span></div>`;
+
+            // Update Rank Card in Leaderboard
+            document.getElementById('rank-balance').innerText = Math.floor(gameData.balance).toLocaleString() + " Credits";
         }
 
         setInterval(() => {
@@ -294,10 +403,101 @@
                 if (type === 'mining_rig') { up.level = 1; gameData.profitPerSec = 50; showToast('Rig Activated!');}
                 else { up.level++; up.price = Math.floor(up.price * 1.6); if(type=='multitap') gameData.clickPower++; if(type=='energy') gameData.maxEnergy+=500; showToast('Upgraded!');}
                 updateUI();
-                saveData(); // Save immediately after purchase
+                saveData();
             } else showToast('Need Credits!', 'error');
         };
 
+        // --- DAILY LOGIN SYSTEM ---
+        const dailyRewards = [500, 1000, 2500, 5000, 10000, 25000, 100000];
+        
+        function renderDailyLogin() {
+            const container = document.getElementById('daily-container');
+            const streakDisplay = document.getElementById('daily-streak-display');
+            const claimBtn = document.getElementById('daily-claim-btn');
+            
+            container.innerHTML = '';
+            
+            // Logic Check Time
+            const lastClaimDate = new Date(gameData.daily.lastClaimTime).toDateString();
+            const todayDate = new Date().toDateString();
+            const isClaimable = lastClaimDate !== todayDate;
+            
+            // Logic Streak Reset if missed more than 1 day
+            const diffTime = Math.abs(new Date() - new Date(gameData.daily.lastClaimTime));
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            if (diffDays > 2 && gameData.daily.lastClaimTime !== 0) {
+                gameData.daily.streak = 0; // Reset streak
+            }
+
+            streakDisplay.innerText = `Day ${gameData.daily.streak + 1}`;
+
+            // Render 7 Days
+            for (let i = 0; i < 7; i++) {
+                const dayDiv = document.createElement('div');
+                let statusClass = 'bg-gray-800 border-gray-700 opacity-50'; // Default Locked
+                
+                if (i < gameData.daily.streak) {
+                    statusClass = 'bg-green-900/50 border-green-500 opacity-100'; // Claimed
+                } else if (i === gameData.daily.streak) {
+                    statusClass = 'bg-cyber-blue/20 border-cyber-blue animate-pulse-glow'; // Current
+                }
+
+                dayDiv.className = `min-w-[70px] h-[90px] rounded-xl border flex flex-col items-center justify-center p-2 ${statusClass}`;
+                dayDiv.innerHTML = `
+                    <span class="text-[10px] text-gray-400">Day ${i+1}</span>
+                    <i class="fa-solid fa-gift text-xl my-1 ${i === gameData.daily.streak ? 'text-cyber-gold' : 'text-gray-500'}"></i>
+                    <span class="text-[10px] font-bold text-white">${dailyRewards[i].toLocaleString()}</span>
+                `;
+                container.appendChild(dayDiv);
+            }
+
+            // Button State
+            if (isClaimable) {
+                claimBtn.disabled = false;
+                claimBtn.innerText = "CLAIM REWARD";
+                claimBtn.classList.remove('opacity-50');
+            } else {
+                claimBtn.disabled = true;
+                claimBtn.innerText = "COME BACK TOMORROW";
+                claimBtn.classList.add('opacity-50');
+            }
+        }
+
+        window.claimDaily = () => {
+            const reward = dailyRewards[gameData.daily.streak];
+            gameData.balance += reward;
+            gameData.daily.streak = (gameData.daily.streak + 1) % 7; // Loop after 7 days
+            gameData.daily.lastClaimTime = Date.now();
+            
+            saveData();
+            updateUI();
+            renderDailyLogin();
+            showToast(`Received +${reward.toLocaleString()}!`);
+            if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        };
+
+        // --- LEADERBOARD MOCKUP ---
+        function renderLeaderboard() {
+            const list = document.getElementById('leaderboard-list');
+            list.innerHTML = '';
+            // Generate some fake users around user score
+            const names = ["Alpha_Node", "CyberNinja", "TON_Whale", "Satoshi_Fan", "PixelPanda", "Future_X", "Red_Baron"];
+            
+            names.forEach((name, index) => {
+                const score = Math.floor(Math.random() * 500000) + 10000;
+                list.innerHTML += `
+                    <div class="glass-card p-3 rounded-xl flex items-center justify-between opacity-70">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold text-xs">${index + 4}</div>
+                            <span class="font-bold text-gray-400 text-sm">${name}</span>
+                        </div>
+                        <span class="text-gray-500 font-bold text-sm">${score.toLocaleString()}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // --- TASKS ---
         const tasks = [
             { id: 'tg_channel_ofc', title: 'Join Official Channel', reward: 5000, icon: 'fa-telegram', url: 'https://t.me/CyberpandaOFC' },
             { id: 'youtube', title: 'Subscribe YouTube', reward: 2000, icon: 'fa-youtube', url: 'https://youtube.com' }
@@ -323,7 +523,8 @@
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('text-cyber-blue'));
             document.getElementById(`tab-${tabId}`).classList.add('active');
             document.querySelector(`.nav-btn[data-target="${tabId}"]`).classList.add('text-cyber-blue');
-            if(tabId === 'earn') renderTasks();
+            if(tabId === 'earn') { renderTasks(); renderDailyLogin(); }
+            if(tabId === 'rank') { renderLeaderboard(); }
         };
 
         function showToast(msg, type='success') {
@@ -332,7 +533,8 @@
             setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translate(-50%, -20px)'; }, 2000);
         }
 
-        updateUI(); renderTasks();
+        // Init
+        updateUI(); renderTasks(); renderDailyLogin();
     </script>
 </body>
 </html>
